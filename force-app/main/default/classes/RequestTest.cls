@@ -25,4 +25,15 @@ global with sharing class RequestTest {
 
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(m1));
     }
+
+    // HttpGet や HttpPost や HttpPut は一つずつしか存在できない
+    @HttpPut
+    global static String superTest() {
+        String payload = '{"Header": {"Status": "test"}}';
+
+        Map<String, Object> mainNode;
+        mainNode = (Map<String, Object>)JSON.deserializeUntyped(payload);
+
+        return mainNode.toString();
+    }
 }
