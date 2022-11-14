@@ -27,7 +27,7 @@ global with sharing class RequestTest {
     }
 
     // CustomClass で deserialize するやり方
-//    @HttpPost
+    // @HttpPost
 //    global static CustomClass doPost() {
 //        CustomClass a = (CustomClass) JSON.deserialize(RestContext.request.requestBody.toString(), CustomClass.class);
 //        System.debug(a);
@@ -37,7 +37,7 @@ global with sharing class RequestTest {
 //    }
 
     // HttpGet や HttpPost や HttpPut は一つずつしか存在できない
-    @HttpPut
+    // @HttpPut
     global static String superTest() {
         String payload = '{"Header": {"Status": "test"}}';
 
@@ -45,5 +45,16 @@ global with sharing class RequestTest {
         mainNode = (Map<String, Object>)JSON.deserializeUntyped(payload);
 
         return mainNode.toString();
+    }
+
+    // ネストの JSON を Contract Class に変換するやり方
+    global static Contract parseNestedJsonStructToContract() {
+        Map<String, Object> req = (Map<String, Object>) JSON.deserializeUntyped(RestContext.request.requestBody.toString());
+        Map<String, Object> HeaderItem = (Map<String, Object>) req.get('HeaderItem');
+        Map<String, Object> Header = (Map<String, Object>) HeaderItem.get('Header');
+
+        JSONParser parser = JSON.createParser(JSON.serialize(Header));
+        Contract contract = (Contract) parser.readValueAs(Contract.class);
+        return contract;
     }
 }
