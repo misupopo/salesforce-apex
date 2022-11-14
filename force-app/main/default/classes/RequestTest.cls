@@ -26,6 +26,16 @@ global with sharing class RequestTest {
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(m1));
     }
 
+    // CustomClass で deserialize するやり方
+//    @HttpPost
+//    global static CustomClass doPost() {
+//        CustomClass a = (CustomClass) JSON.deserialize(RestContext.request.requestBody.toString(), CustomClass.class);
+//        System.debug(a);
+//        System.debug(a);
+//
+//        return a;
+//    }
+
     // HttpGet や HttpPost や HttpPut は一つずつしか存在できない
     @HttpPut
     global static String superTest() {
