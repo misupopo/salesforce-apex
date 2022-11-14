@@ -9,6 +9,7 @@ create-project: ## Create a new project
 sf-login: ## sandbox 環境にログインします。
 	sfdx force:auth:web:login -r https://test.salesforce.com -a sand1
 
+# salesforce で apex class を追加したら manifest/package.xml の members に追加しないといけない
 .PHONY: sf-all-retrieve
 sf-all-retrieve: ## 全ての Apex code を取得します。
 	sfdx force:source:retrieve -x manifest/package.xml
@@ -20,10 +21,20 @@ sf-all-retrieve: ## 全ての Apex code を取得します。
 # Lightning Webコンポーネント
 # sfdx force:source:retrieve -m LightningComponentBundle -u san1
 
-.PHONY: sf-all-deploy
-sf-all-deploy: ## 全ての Apex code をデプロイします。
+.PHONY: sf-create-class
+sf-create-class: ## クラスを作成します。
+	sfdx force:apex:class:create -n $(class) -d force-app/main/default/classes
+
+# apex のクラスファイルは intellij から直接削除すると同期される
+.PHONY: sf-delete-class
+sf-delete-class: ## クラスを作成します。
+	#sfdx force:source:delete -p force-app/main/default/classes/test -u sand1
+
+.PHONY: sf-set-config
+sf-set-config: ## 全ての Apex code をデプロイします。
 	sfdx config:set defaultusername=$(USERNAME)
 
+# 基本的に intellij で apex ファイルを保存すると自動的にデプロイされる
 .PHONY: sf-all-deploy
 sf-all-deploy: ## 全ての Apex code をデプロイします。
 	sfdx force:source:deploy -x manifest/package.xml

@@ -1,5 +1,5 @@
 {
-  "orgName": "company",
+  "orgName": "salesforce-apex",
   "edition": "Developer",
   "features": ["EnableSetPasswordInApi"],
   "settings": {
