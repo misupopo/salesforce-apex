@@ -1,5 +1,7 @@
 @RestResource(UrlMapping='/test/*')
 global with sharing class RequestTest {
+    // Get Method
+    // https://$(salesforce url)/services/apexrest/test/request
     @HttpGet
     global static void request() {
         RestRequest req = RestContext.request;
